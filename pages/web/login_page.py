@@ -11,7 +11,7 @@ class LoginPage:
         self.email_input = tid("login-email-input")
         self.password_input = tid("login-password-input")
         self.login_button = tid("login-submit-button")
-        #self.forgot_password_link = tid("login-forgot-password-link")
+        self.forgot_password_link = tid("login-forgot-link")
         self.sign_up_link = tid("login-signup-link")
         self.error_message = tid("login-error")
 
@@ -35,3 +35,11 @@ class LoginPage:
         self.email_input.fill(email)
         self.password_input.fill(password)
         self.login_button.click()
+        
+        #ERROR MESSAGE CHECK
+    def wait_for_error_message(self):
+        self.error_message.wait_for(state="visible")
+        
+    def get_error_message(self):
+        return self.error_message.inner_text()
+    
