@@ -9,15 +9,19 @@ load_dotenv()
 @pytest.fixture(scope="session")
 def browser():
    with sync_playwright() as p:
-       browser = p.chromium.launch(headless=False)
+       browser = p.chromium.launch(
+          headless=False
+          )
        yield browser
        browser.close()
 
 @pytest.fixture
 def page(browser):
-   page = browser.new_page()
+   context = browser.new_context()
+   page = context.new_page()
+   
    yield page
-   page.close()
+   context.close()
    
 @pytest.fixture
 def login_page(page:Page):

@@ -1,7 +1,7 @@
 import re #for regular expresions
 from playwright.sync_api import Page, expect #for verification 
 
-def test_bogo(page: Page):
+def test_home_page(page: Page):
     page.wait_for_timeout(3000) #wait for 3 second
     
     page.goto("https://www.bogogourmet.com/") #Open Bogo page
