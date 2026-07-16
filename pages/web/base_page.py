@@ -76,6 +76,9 @@ class BasePage:
 
     def is_checked(self, locator: Locator) -> bool:
         return locator.is_checked()
+    
+    def get_current_url(self) -> str:
+        return self.page.url
 
     # -------------------------
     # Waits
@@ -112,6 +115,12 @@ class BasePage:
 
     def should_have_url(self, url: str) -> None:
         expect(self.page).to_have_url(url)
+        
+    def should_be_enabled(self, locator: Locator) -> None:
+        expect(locator).to_be_enabled()
+
+    def should_be_disabled(self, locator: Locator) -> None:
+        expect(locator).to_be_disabled()
 
     # -------------------------
     # Utilities

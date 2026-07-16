@@ -1,45 +1,56 @@
-from playwright.sync_api import Page, expect
+from playwright.sync_api import Page
+from pages.web.base_page import BasePage
 
 #LOCATORS FOR LOGIN PAGE
 
-class LoginPage:
+class LoginPage(BasePage):
     def __init__(self, page:Page):
-        self.page = page
-        tid = page.get_by_test_id
+        super().__init__(page)
         
         #LOGIN PAGE ELEMENTS
-        self.email_input = tid("login-email-input")
-        self.password_input = tid("login-password-input")
-        self.login_button = tid("login-submit-button")
-        self.forgot_password_link = tid("login-forgot-link")
-        self.sign_up_link = tid("login-signup-link")
-        self.error_message = tid("login-error")
+        self.email_input = self.get_by_test_id("login-email-input")
+        self.password_input = self.get_by_test_id("login-password-input")
+        self.login_button = self.get_by_test_id("login-submit-button")
+        self.forgot_password_link = self.get_by_test_id("login-forgot-link")
+        self.sign_up_link = self.get_by_test_id("login-signup-link")
+        self.error_message = self.get_by_test_id("login-error")
 
         
-        #ACTIONS FOR THE LOGIN PAGE
+        # ----------------------------------
+        # Login Actions
+        # ----------------------------------
         
         #FILL EMAIL
-    def fill_email(self, email: str):
-        self.email_input.fill(email)
+    def fill_email(self, email: str) -> None:
+        self.fill(self.email_input, email)
         
         #FILL PASSWORD
-    def fill_password(self, password: str):
-        self.password_input.fill(password)
+    def fill_password(self, password: str) -> None:
+        self.fill(self.password_input, password)
         
         #CLICK LOGIN BUTTON
-    def click_login(self):
-        self.login_button.click()
-
+    def click_login(self) -> None:
+        self.click(self.login_button)
+        
         #LOGIN METHOD THAT COMBINES ALL ACTIONS
-    def login(self, email: str, password: str):
-        self.email_input.fill(email)
-        self.password_input.fill(password)
-        self.login_button.click()
+    def login(self, email: str, password: str) -> None:
+        self.fill_email(email)
+        self.fill_password(password)
+        self.click_login()
         
-        #ERROR MESSAGE CHECK
-    def wait_for_error_message(self):
-        self.error_message.wait_for(state="visible")
+   
+    # -------------------------
+    # Verifications/Assertions
+    # -------------------------
+
+    def verify_error_message(self, message: str) -> None:
+
+        self.wait_for_visible(self.error_message)
+
+        self.should_have_text(self.error_message, message)
         
-    def get_error_message(self):
-        return self.error_message.inner_text()
-    
+    def verify_login_button_enabled(self) -> None:
+        self.should_be_enabled(self.login_button)
+        
+    def verify_login_button_disabled(self) -> None:
+        self.should_be_disabled(self.login_button)

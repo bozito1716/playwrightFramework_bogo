@@ -1,108 +1,101 @@
 from playwright.sync_api import Page
+from pages.web.base_page import BasePage
 
 #---------- LOCATORS FOR THE HOME PAGE ELEMENTS ----------#
 
-class HomePage:
+class HomePage(BasePage):
     def __init__(self, page: Page):
-        self.page = page
-        tid = page.get_by_test_id
+        super().__init__(page)
+    
 
         # HEADER LINKS AND NAVIGATION BUTTONS
-        self.how_it_works_link = tid("nav-link-how-it-works")
-        self.restaurants_link = tid("nav-link-restaurants")
-        self.membership_link = tid("nav-link-membership")
-        self.become_a_partner_link = tid("nav-link-b2b")
-        self.login_button = tid("nav-login-link")
-        self.start_trial_button = tid("nav-start-trial-button")
+        self.how_it_works_link = self.get_by_test_id("How It Works")
+        self.restaurants_link = self.get_by_test_id("nav-link-restaurants")
+        self.membership_link = self.get_by_test_id("nav-link-membership")
+        self.become_a_partner_link = self.get_by_test_id("nav-link-b2b")
+        self.login_button = self.get_by_test_id("nav-login-link")
+        self.start_trial_button = self.get_by_test_id("nav-start-trial-button")
 
         # HERO SECTION BUTTONS
-        self.hero_start_trial_button = tid("hero-start-trial-button")
+        self.hero_start_trial_button = self.get_by_test_id("hero-start-trial-button")
 
         # ALL RESTAURANTS SECTION BUTTONS
-        self.see_all_restaurants_button = tid("restaurants-see-all-link")
+        self.see_all_restaurants_button = self.get_by_test_id("restaurants-see-all-link")
 
         # PRICING SECTION BUTTONS
-        self.start_trial_monthly_button = tid("pricing-billing-monthly-button")
-        self.start_trial_annual_button = tid("pricing-billing-annual-button")
-        self.pricing_start_trial_button = tid("pricing-start-trial-button")
+        self.start_trial_monthly_button = self.get_by_test_id("pricing-billing-monthly-button")
+        self.start_trial_annual_button = self.get_by_test_id("pricing-billing-annual-button")
+        self.pricing_start_trial_button = self.get_by_test_id("pricing-start-trial-button")
 
         # BECOME A PARTNER SECTION BUTTONS
-        self.become_a_partner_button = tid("biz-teaser-cta-link")
+        self.become_a_partner_button = self.get_by_test_id("biz-teaser-cta-link")
 
         # APP STORE AND GOOGLE PLAY BUTTONS
-        self.apple_store_button = tid("final-cta-app-store-button")
-        self.google_play_button = tid("final-cta-google-play-button")
+        self.apple_store_button = self.get_by_test_id("final-cta-app-store-button")
+        self.google_play_button = self.get_by_test_id("final-cta-google-play-button")
 
         # FOOTER LINKS
-        self.footer_terms_link = tid("footer-link-terms")
-        self.footer_privacy_link = tid("footer-link-privacy")
-        self.footer_contact_us_link = tid("footer-link-contact")
-        self.footer_for_restaurants_link = tid("footer-link-partners")
+        self.footer_terms_link = self.get_by_test_id("footer-link-terms")
+        self.footer_privacy_link = self.get_by_test_id("footer-link-privacy")
+        self.footer_contact_us_link = self.get_by_test_id("footer-link-contact")
+        self.footer_for_restaurants_link = self.get_by_test_id("footer-link-partners")
 
         #HOW IT WORKS LINK
     def open_how_it_works(self):
-        self.how_it_works_link.click()
+        self.click(self.how_it_works_link)
         
         #RESTAURANTS LINK
     def open_restaurants(self):
-        self.restaurants_link.click()
+        self.click(self.restaurants_link)
         
         #MEMBERSHIP LINK
     def open_membership(self):
-        self.membership_link.click()
+        self.click(self.membership_link)
 
         #BECOME A PARTNER LINK
     def open_partner_page_from_header(self):
-        self.become_a_partner_link.click()
+        self.click(self.become_a_partner_link)
 
         #LOGIN BUTTON
     def open_login(self):
-        self.login_button.click()
+        self.click(self.login_button)
         
         #START TRIAL BUTTON
     def open_trial_sign_up(self):
-        self.start_trial_button.click()
+        self.click(self.start_trial_button)
     
         #HERO SECTION START TRIAL BUTTON
     def open_hero_start_trial(self):
-        self.hero_start_trial_button.click()
+        self.click(self.hero_start_trial_button)
         
         #SEE ALL RESTAURANTS BUTTON
     def open_see_all_restaurants(self):
-        self.see_all_restaurants_button.click()
+        self.click(self.see_all_restaurants_button)
         
         #PRICING SECTION START TRIAL BUTTONS
     def open_start_trial_monthly(self):
-        self.start_trial_monthly_button.click()
+        self.click(self.start_trial_monthly_button)
     def open_start_trial_annual(self):
-        self.start_trial_annual_button.click()
+        self.click(self.start_trial_annual_button)
     def open_pricing_start_trial(self):
-        self.pricing_start_trial_button.click()
+        self.click(self.pricing_start_trial_button)
         
         #BECOME A PARTNER SECTION BUTTON
     def open_become_a_partner_from_hero_button(self):
-        self.become_a_partner_button.click()
+        self.click(self.become_a_partner_button)
         
         #APP STORE AND GOOGLE PLAY BUTTONS
     def open_apple_store(self):
-        self.apple_store_button.click()
+        self.click(self.apple_store_button)
     def open_google_play(self):
-        self.google_play_button.click()
+        self.click(self.google_play_button)
         
         #FOOTER LINKS
     def open_footer_terms(self):
-        self.footer_terms_link.click()
+        self.click(self.footer_terms_link)
     def open_footer_privacy(self):
-        self.footer_privacy_link.click()
+        self.click(self.footer_privacy_link)
     def open_footer_contact_us(self):
-        self.footer_contact_us_link.click()
+        self.click(self.footer_contact_us_link)
     def open_footer_for_restaurants(self):
-        self.footer_for_restaurants_link.click()
-        
-        
-
-
-
-           
-           
-           
+        self.click(self.footer_for_restaurants_link)
