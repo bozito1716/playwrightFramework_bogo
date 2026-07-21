@@ -1,5 +1,6 @@
 from pathlib import Path
 from playwright.sync_api import Page, Locator, expect
+import re
 
 
 DEFAULT_TIMEOUT = 10000
@@ -57,7 +58,10 @@ class BasePage:
         locator.select_option(value)
 
     def scroll_into_view(self, locator: Locator) -> None:
-        locator.scroll_into_view_if_needed()
+
+        locator.evaluate(
+            "(element) => element.scrollIntoView({block: 'center'})"
+        )
 
     # -------------------------
     # Getters
@@ -114,7 +118,7 @@ class BasePage:
         expect(locator).to_contain_text(text)
 
     def should_have_url(self, url: str) -> None:
-        expect(self.page).to_have_url(url)
+        expect(self.page).to_have_url(re.compile(f".*{re.escape(url)}"))
         
     def should_be_enabled(self, locator: Locator) -> None:
         expect(locator).to_be_enabled()

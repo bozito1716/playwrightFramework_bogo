@@ -1,0 +1,105 @@
+import os
+
+from dotenv import load_dotenv
+from pages.web.login_page import LoginPage
+from utils.test_data import LoginData
+load_dotenv()
+
+#PAGE SHOULD LOAD
+def test_login_page_is_loaded(login_page):
+    login_page.should_be_loaded()
+
+#SUCCESSFUL LOGIN TEST CASE
+def test_user_can_login_with_valid_credentials(login_page: LoginPage):
+    
+    login_page.login(
+
+        os.environ["VALID_EMAIL"],
+        os.environ["VALID_PASSWORD"]
+    )
+    login_page.wait_for_url("**/restaurants")
+    assert "/restaurants" in login_page.get_current_url()
+    
+#UNSUCCESSFUL LOGIN TEST CASE
+def test_user_cannot_login_with_invalid_credentials(login_page: LoginPage):
+    
+    login_page.login(
+
+        LoginData.INVALID_EMAIL,
+        LoginData.INVALID_PASSWORD
+
+    )
+    
+    login_page.verify_error_message("Wrong email or password.")
+    
+    
+#TEST LOGIN BUTTON IS DISABLED
+def test_login_button_disabled_with_invalid_email(login_page: LoginPage):
+    
+    login_page.fill_email(LoginData.INVALID_EMAIL_FORMAT)
+    login_page.fill_password(LoginData.INVALID_PASSWORD)
+    login_page.verify_login_button_disabled()
+
+def test_login_button_disabled_when_fields_are_empty(login_page: LoginPage):
+    login_page.verify_login_button_disabled()
+    
+def test_login_button_disabled_when_email_field_is_empty(login_page: LoginPage):
+    
+    login_page.fill_password(LoginData.VALID_PASSWORD_FORMAT)
+    login_page.verify_login_button_disabled()
+    
+def test_login_button_disabled_when_password_field_is_empty(login_page: LoginPage):
+    
+    login_page.fill_email(LoginData.VALID_EMAIL_FORMAT)
+    login_page.verify_login_button_disabled()
+
+#TEST LOGIN BUTTON IS ENABLE
+def test_login_button_enable_with_valid_email(login_page: LoginPage):
+    
+    login_page.fill_email(LoginData.VALID_EMAIL_FORMAT)
+    login_page.fill_password(LoginData.VALID_PASSWORD_FORMAT)
+    
+    login_page.verify_login_button_enabled
+    
+    
+def test_login_button_enable_with_one_char_password(login_page: LoginPage):
+    
+    login_page.fill_email(LoginData.VALID_EMAIL_FORMAT)
+    login_page.fill_password("a")
+    
+    login_page.verify_login_button_enabled
+    
+#TEST USER STAYS LOGGED IN AFTER REFRESH
+def test_user_stays_logged_in_after_page_refresh(login_page: LoginPage):
+    login_page.login(
+
+        os.environ["VALID_EMAIL"],
+        os.environ["VALID_PASSWORD"]
+    )
+    login_page.wait_for_url("**/restaurants")
+    login_page.refresh
+    login_page.wait_for_url("**/restaurants")
+    assert "/restaurants" in login_page.get_current_url()
+    
+#TEST LOGIN IN USING ENTER KEY
+def test_user_can_login_using_enter_key(login_page: LoginPage):
+    
+    login_page.fill_email(os.environ["VALID_EMAIL"])
+    login_page.fill_password(os.environ["VALID_PASSWORD"])
+    login_page.press(login_page.password_input, "Enter")
+    login_page.wait_for_url("**/restaurants")
+
+    assert "/restaurants" in login_page.get_current_url()
+
+#IMPLEMENT A TEST ABOUT GOING TO LOGIN WHEN LOGGED IN
+
+#FORGOT PASSWORD NAVIGATION
+def test_user_can_open_forgot_password_page(login_page: LoginPage):
+    login_page.click_forgot_password_link()
+    login_page.should_have_url("/forgot-password")
+    
+#CREATE AN ACCOUNT LINK
+def test_user_can_open_join_page(login_page: LoginPage):
+    login_page.click_create_account_button()
+    login_page.should_have_url("/join")
+    

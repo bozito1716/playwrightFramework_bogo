@@ -12,7 +12,8 @@ class LoginPage(BasePage):
         self.password_input = self.get_by_test_id("login-password-input")
         self.login_button = self.get_by_test_id("login-submit-button")
         self.forgot_password_link = self.get_by_test_id("login-forgot-link")
-        self.sign_up_link = self.get_by_test_id("login-signup-link")
+        self.create_account_link = self.get_by_test_id("login-signup-link")
+        
         self.error_message = self.get_by_test_id("login-error")
 
         
@@ -32,7 +33,13 @@ class LoginPage(BasePage):
     def click_login(self) -> None:
         self.click(self.login_button)
         
-        #LOGIN METHOD THAT COMBINES ALL ACTIONS
+    def click_forgot_password_link(self) -> None:
+        self.click(self.forgot_password_link)
+    
+    def click_create_account_button(self) -> None:
+        self.click(self.create_account_link)
+        
+    #LOGIN METHOD THAT COMBINES ALL ACTIONS
     def login(self, email: str, password: str) -> None:
         self.fill_email(email)
         self.fill_password(password)
@@ -44,9 +51,7 @@ class LoginPage(BasePage):
     # -------------------------
 
     def verify_error_message(self, message: str) -> None:
-
         self.wait_for_visible(self.error_message)
-
         self.should_have_text(self.error_message, message)
         
     def verify_login_button_enabled(self) -> None:
@@ -54,3 +59,8 @@ class LoginPage(BasePage):
         
     def verify_login_button_disabled(self) -> None:
         self.should_be_disabled(self.login_button)
+    
+    def should_be_loaded(self) -> None:
+        self.should_be_visible(self.email_input)
+        self.should_be_visible(self.password_input)
+        self.should_be_visible(self.login_button)
