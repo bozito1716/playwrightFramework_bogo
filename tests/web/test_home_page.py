@@ -57,4 +57,4 @@ def test_user_can_navigate_to_join_page_with_annual_pricing(home_page: HomePage)
 def test_user_can_navigate_to_become_a_parter_page_from_hero_button(home_page: HomePage):
     home_page.open_become_a_partner_from_hero_button()
     home_page.should_have_url("/for-restaurants")
-    
+

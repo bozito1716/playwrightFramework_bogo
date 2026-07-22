@@ -16,7 +16,7 @@ class BasePage:
         self.page.goto(url, wait_until="networkidle")
 
     def refresh(self) -> None:
-        self.page.reload()
+        self.page.reload(wait_until="networkidle")
 
     def go_back(self) -> None:
         self.page.go_back()
