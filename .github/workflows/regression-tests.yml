@@ -48,4 +48,4 @@ jobs:
           VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
 
         run: |
-          python -m pytest -m smoke
+          python -m pytest -m regression
