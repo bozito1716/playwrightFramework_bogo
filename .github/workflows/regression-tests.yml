@@ -1,0 +1,51 @@
+name: Regression Tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+  smoke-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Check requirements received by GitHub
+        run: |
+          pwd
+          ls -la
+          cat requirements.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --no-cache-dir -r requirements.txt
+
+      - name: Verify Python environment
+        run: |
+          python --version
+          python -m pip show python-dotenv
+          python -c "from dotenv import load_dotenv; print('dotenv installed')"
+
+      - name: Install Playwright browsers
+        run: |
+          playwright install --with-deps
+
+      - name: Run Regression tests
+        env:
+          BASE_URL: ${{ vars.BASE_URL }}
+          LOGIN_URL: ${{ vars.LOGIN_URL }}
+          JOIN_URL: ${{ vars.JOIN_URL }}
+          VALID_EMAIL: ${{ secrets.VALID_EMAIL }}
+          VALID_PASSWORD: ${{ secrets.VALID_PASSWORD }}
+
+        run: |
+          python -m pytest -m smoke
