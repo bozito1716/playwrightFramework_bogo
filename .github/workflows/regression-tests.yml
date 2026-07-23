@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  smoke-test:
+  regression-test:
 
     runs-on: ubuntu-latest
 
