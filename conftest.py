@@ -12,7 +12,7 @@ load_dotenv()
 def browser():
    with sync_playwright() as p:
        browser = p.chromium.launch(
-          headless=False
+          headless=True
           )
        yield browser
        browser.close()
@@ -21,31 +21,32 @@ def browser():
 def page(browser):
     context = browser.new_context(
         viewport={"width": 1920, "height": 1080},
-        reduced_motion="reduce"
+        reduced_motion="reduce",
     )
 
-    page = context.new_page()
+    context.add_init_script("""
+        document.addEventListener("DOMContentLoaded", () => {
+            const style = document.createElement("style");
+            style.textContent = `
+                *, *::before, *::after {
+                    animation-duration: 0s !important;
+                    animation-delay: 0s !important;
+                    transition-duration: 0s !important;
+                    transition-delay: 0s !important;
+                    scroll-behavior: auto !important;
+                }
 
-    page.add_style_tag(content="""
-        *,
-        *::before,
-        *::after {
-            animation-duration: 0s !important;
-            animation-delay: 0s !important;
-            transition-duration: 0s !important;
-            transition-delay: 0s !important;
-            scroll-behavior: auto !important;
-        }
-
-        .reveal,
-        .reveal.visible {
-            opacity: 1 !important;
-            transform: none !important;
-        }
+                .reveal, .reveal.visible {
+                    opacity: 1 !important;
+                    transform: none !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
     """)
 
-    yield page
-
+    test_page = context.new_page()
+    yield test_page
     context.close()
    
 @pytest.fixture
