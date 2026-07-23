@@ -41,8 +41,8 @@ jobs:
 
       - name: Run smoke tests
         env:
-          BASE_URL: ${{ secrets.BASE_URL }}
-          LOGIN_URL: ${{ secrets.LOGIN_URL }}
-          JOIN_URL: ${{ secrets.JOIN_URL }}
+          BASE_URL: ${{ vars.BASE_URL }}
+          LOGIN_URL: ${{ vars.LOGIN_URL }}
+          JOIN_URL: ${{ vars.JOIN_URL }}
         run: |
           python -m pytest -m smoke
