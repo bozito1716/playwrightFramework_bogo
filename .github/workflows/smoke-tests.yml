@@ -40,4 +40,4 @@ jobs:
 
       - name: Run smoke tests
         run: |
-          pytest -m smoke
+         python -m pytest -m smoke
